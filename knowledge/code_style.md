@@ -1,51 +1,33 @@
-# Estilo Flutter / Dart
+# Estilo y Convenciones de Código Web
 
-## Widgets y archivos
-
-- Usar `const` cuando aplique.
-- Mantener archivos Dart idealmente bajo 250 líneas; máximo 300.
-- Extraer widgets o diálogos extensos de pantallas principales.
-- Liberar `TextEditingController`, `AnimationController` y `StreamSubscription`.
-- Centralizar estado con patrón elegido por proyecto. Si usa Riverpod, separar vista de providers/notifiers.
-- En `DropdownButtonFormField`, usar `initialValue`; evitar `value` deprecado.
-
-## Nombrado
+## Nomenclatura
 
 | Elemento | Convención | Ejemplo |
 |---|---|---|
-| Clases / Widgets | `PascalCase` | `UserProfileCard` |
-| Archivos Dart | `snake_case` | `user_profile_card.dart` |
-| Variables / métodos | `camelCase` | `fetchUserData()` |
-| Constantes | `camelCase` con `const` | `const defaultTimeout` |
-| Providers (Riverpod) | `camelCaseProvider` | `authStateProvider` |
-| Enums | `PascalCase`, valores `camelCase` | `enum Status { loading, done }` |
+| Componentes | `PascalCase` | `UserProfileCard.svelte` |
+| Archivos de utilidad | `camelCase` o `kebab-case` | `authUtils.ts` / `auth-utils.ts` |
+| Variables / funciones | `camelCase` | `fetchUserData()` |
+| Constantes | `UPPER_SNAKE_CASE` | `MAX_RETRIES` |
+| CSS clases | `kebab-case` | `.user-profile-card` |
+| Stores / Composables | `camelCase` con prefijo descriptivo | `useAuthStore`, `authStore` |
 
-- Nombres descriptivos. Evitar: `data`, `info`, `temp`, `val` sin contexto.
-- Prefijo `_` solo para privados de clase, no para variables locales.
+## TypeScript
 
-## Async / Await
+- Preferir `interface` sobre `type` para formas de objetos públicas.
+- No usar `any` salvo en casos extremos justificados con comentario.
+- Activar `strict: true` en `tsconfig.json`.
+- Props de componentes con tipos explícitos siempre.
 
-- Preferir `async`/`await` sobre `.then()` encadenado para legibilidad.
-- Usar `FutureBuilder` solo cuando el `Future` sea local al build. Para estado global → provider/notifier.
-- No usar `await` en `initState`; usar `Future.microtask(() => ...)` o manejar en el provider.
-- Siempre manejar el caso `AsyncError` en `FutureBuilder` / `AsyncValue`.
+## Async / Manejo de Errores
 
-## Manejo de errores
+- Preferir `async/await` sobre `.then()` encadenado.
+- Nunca silenciar errores con `catch(e) {}` vacío.
+- Separar errores de red, validación y negocio en capas distintas.
+- Usar loading/error states explícitos en la UI.
 
-- Nunca silenciar errores con `catch (e) {}` vacío. Mínimo: loguear con `debugPrint`.
-- Usar tipos de error específicos del dominio; evitar `Exception` genérica en lógica de negocio.
-- En UI: mostrar `SnackBar` o diálogo — nunca dejar error silencioso al usuario.
-- Separar errores de red, de validación y de negocio en capas distintas.
+## Organización
 
-## Navegación
-
-- Usar el sistema de rutas del proyecto (GoRouter / Navigator 2 / Navigator 1 — según proyecto).
+- Archivos idealmente < 250 líneas; máximo 300.
+- Un componente por archivo.
+- Separar lógica de negocio de la capa de presentación (stores/composables/hooks vs componentes).
 - No mezclar estilos de navegación en el mismo proyecto.
-- Pasar solo datos serializables por rutas nominadas. Objetos complejos → provider compartido.
-- `context.pop()` con resultado en diálogos/sheets; no usar `Navigator.of(context).pop()` directamente si el proyecto usa GoRouter.
-
-## Nulabilidad
-
-- Activar null-safety (`dart>=2.12`). No usar `!` sin estar seguro del valor.
-- Preferir `??` y `?.` sobre comprobaciones `if (x != null)` verbosas.
-- Evitar `late` salvo en campos inicializados en `initState` con justificación clara.
