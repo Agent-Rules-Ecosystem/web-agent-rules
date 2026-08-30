@@ -24,7 +24,7 @@ Se instala como submódulo de Git en `.agents/`. Las reglas globales son 100% ag
 | `$boot` | Bootstrap completo, lectura de reglas, verificación de `overview/` y handoff de agente. |
 | `$status` | Muestra el estado activo en 5 líneas. |
 | `$work [descripción]` | Registra tarea/bug y sincroniza todos los rastreadores. |
-| `$archi` | Escanea cambios estructurales y actualiza diagramas Mermaid en `overview/architecture.md`. |
+| `$archi` | Escanea cambios estructurales y actualiza diagramas Mermaid en `overview/architecture.md` (Hub) y `overview/architecture/` (Spoke). |
 | `$learn [texto]` | Valida con Filtro Agnóstico y registra propuesta candidata. |
 | `$learnagnostico [texto]` | Descontextualiza entidades de negocio y registra en `overview/learning.md`. |
 | `$close` | Cierre de sesión, validación de calidad y sincronización final. |
