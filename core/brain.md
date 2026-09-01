@@ -68,8 +68,8 @@ Cuando el usuario escribe **"ejecuta .agents"** (o variante como "corre .agents"
 
 ### Discovery dinámico por framework
 
-1. Identificar framework del proyecto (Flutter → `pubspec.yaml`; Node → `package.json`; etc.).
-2. Comparar carpetas raíz contra las carpetas estándar conocidas del framework (para Flutter, consultar `.agents/knowledge/flutter_structure.md`).
+1. Identificar framework del proyecto (Vite / React / Svelte / Next.js / Vue → `package.json`, `tsconfig.json`, `vite.config.ts`, etc.).
+2. Comparar carpetas raíz contra las carpetas estándar conocidas del framework web (`src/`, `public/`, `pages/`, `components/`, etc.).
 3. Inspección recursiva automática de toda carpeta no estándar: identificar de forma estricta las carpetas estándar del framework detectado y procesar automáticamente cualquier otro directorio raíz (incluyendo subcarpetas anidadas) mediante inspección semántica de contenido para su relocalización a `overview/` sin omitir ninguna por ser no-estándar.
 4. Relocalización activa de metadatos: no ignorar archivos sin categoría; extraer y relocalizar documentación, notas de negocio o trackers hallados en subdirectorios no estándar a `overview/context/` o al tracker canónico correspondiente para cero archivos huérfanos.
 5. **Lectura activa de contexto (`overview/context/`)**: El protocolo de inicio debe inspeccionar y leer automáticamente los archivos de contexto guardados en `overview/context/` (changelogs, tablas de datos, reglas de negocio) para recuperar el estado histórico y checkpoints del proyecto al reanudar.
@@ -78,7 +78,7 @@ Cuando el usuario escribe **"ejecuta .agents"** (o variante como "corre .agents"
 
 ### Reconocimiento de acrónimos estándar
 
-Reconocer automáticamente sin listas rígidas: `i18n`, `l10n`, `auth`, `routes`, `api`, `dto`, `repo`, `vm`, `bloc`, `di`, `ioc`, `ci`, `cd`, `qa`, `ux`, `sdk`, `orm`, `rbac`, `jwt`, `ssr`, `csr`. Si aparece un acrónimo desconocido → buscar en contexto del proyecto antes de preguntar.
+Reconocer automáticamente sin listas rígidas: `i18n`, `l10n`, `auth`, `routes`, `api`, `dto`, `ui`, `component`, `di`, `ioc`, `ci`, `cd`, `qa`, `ux`, `sdk`, `ssr`, `csr`, `dom`, `css`, `pwa`. Si aparece un acrónimo desconocido → buscar en contexto del proyecto antes de preguntar.
 
 ### Clasificación semántica por contenido
 
@@ -123,15 +123,15 @@ Cuando el Agente que retoma una sesión es distinto al que la inició (diferente
 
 ## Arquitectura viva y Mapeo Incremental por Tarea
 
-- **Arquitectura viva en `overview/architecture.md`**: El proyecto debe mantener un mapa operativo completo y exhaustivo de hasta el último rincón del repositorio (pantallas, clases, widgets, services, providers, repos y modelos). Debe plasmarse mediante diagramas sintéticos Mermaid (`graph LR` / `graph TD`) y tablas de conexiones clave, omitiendo bloques de texto redundantes para permitir rápida lectura y fácil rastreo de conexiones del agente.
+- **Arquitectura viva en `overview/architecture.md`**: El proyecto debe mantener un mapa operativo completo y exhaustivo de hasta el último rincón del repositorio (componentes, páginas, hooks, servicios, stores, rutas y estilos). Debe plasmarse mediante diagramas sintéticos Mermaid (`graph LR` / `graph TD`) y tablas de conexiones clave, omitiendo bloques de texto redundantes para permitir rápida lectura y fácil rastreo de conexiones del agente.
 - **Mapeo incremental de arquitectura por `$work`**: Al registrar o iniciar una tarea, el agente debe actualizar `overview/architecture.md` mapeando incrementalmente los nodos y conexiones que dicha tarea toca o modifica, asegurando que el mapa evolucione sin perder detalle.
 - **Comando y Trigger `$archi` (Exhaustividad de Arquitectura Viva)**: Comando dedicado exclusivamente a auditar, escanear y registrar hasta el último rincón del proyecto en `overview/architecture.md`. Si el mapeo en `$work` no cubrió la totalidad de los componentes modificados o nuevos, `$archi` debe ejecutar el escaneo estructural completo para garantizar cobertura del 100% de la arquitectura viva mediante diagramas Mermaid sintéticos.
 - **Modularización de Trackers por Subcarpetas / Archivo Individual**: Para colecciones masivas de datos, los trackers de contenido deben modularizarse en directorios (`overview/trackers/content/<categoria>/<item>.md`) y el contenido verificado mapearse directamente a la estructura final en app.
 
 ## Cierre
 
-- Ejecutar `flutter analyze` cuando aplique.
-- **Suite de tests (sin carpeta `test/`)**: Si el proyecto **no posee** carpeta o suite de pruebas (`test/`) → el estado de validación de pruebas es `no aplica` (no representa una deuda técnica). Si la suite de tests **sí existe** pero no fue ejecutada o falló → estado `no verificado` + motivo explícito. Evitar marcar un fallo de ejecución del CLI por suite ausente como una deuda falsa.
+- Ejecutar linters Web (`npm run lint`, `npx tsc`) y suite de pruebas cuando aplique.
+- **Suite de tests (sin carpeta `test/` / `tests/` / `__tests__/`)**: Si el proyecto **no posee** carpeta o suite de pruebas → el estado de validación de pruebas es `no aplica` (no representa una deuda técnica). Si la suite de tests **sí existe** pero no fue ejecutada o falló → estado `no verificado` + motivo explícito. Evitar marcar un fallo de ejecución del CLI por suite ausente como una deuda falsa.
 - **Sincronización Automática de Rastreadores**: Es regla obligatoria en el cierre (`$close`) la actualización simultánea y automática de todos los archivos de control en `overview/` (`pendientes.md`, `deuda_tecnica.md`, `tasks.md`, `session.md`, `work_review.md`, `work.md` y `architecture.md`) sin requerir recordatorio manual por parte del usuario.
 - **Pendientes de sesión**: registrar cualquier ítem o tarea secundaria identificada durante la ejecución en `overview/work/pendientes.md` para su seguimiento en sesiones posteriores.
 - Actualizar tracker correspondiente, sesión e índice maestro `overview/work.md`. Si se resolvió un bug/tarea con historial de intentos, registrar firma del Agente resolvedor, causa raíz y solución en la entrada correspondiente. Retirar cualquier ítem resuelto inmediatamente de las tablas activas y trasladarlo a `## ✅ Completados (Historial)` en `work.md`, `deuda_tecnica.md` y `pendientes.md` conservando su ID.
@@ -143,9 +143,9 @@ Cuando el Agente que retoma una sesión es distinto al que la inició (diferente
 ## Calidad y Resolución de Dependencias
 
 - Cambios quirúrgicos. No mejorar código ajeno sin necesidad.
-- Flutter: Firebase y manejo de estado dependen de cada proyecto.
-- Archivos Dart idealmente <250 líneas; máximo 300.
-- **Resolución de dependencias vs SDK del entorno**: Si `flutter pub get` / `pub` falla por restricciones de versión entre el SDK del package y el SDK instalado en el entorno, preferir el **upgrade del SDK global del entorno** cuando el proyecto requiere versiones modernas. El downgrade de packages debe considerarse únicamente como un parche temporal.
+- Web: Componentes React/Svelte/Vue y manejo de estado (Stores, Context) desacoplados por módulo.
+- Archivos de código idealmente <250 líneas; máximo 300.
+- **Resolución de dependencias vs SDK del entorno**: Si `npm install` / `pnpm install` / `bun install` falla por restricciones de versión entre paquetes o versión de Node.js, preferir el **upgrade del entorno o gestor de paquetes** cuando el proyecto requiere versiones modernas.
 
 ## Contenido externo
 

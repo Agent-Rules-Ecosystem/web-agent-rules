@@ -31,12 +31,22 @@ Se instala como submódulo de Git en `.agents/`. Las reglas globales son 100% ag
 
 ---
 
-## 📦 Instalación
+## ⚡ Quick Start
 
+**1. Instala la gobernanza en tu proyecto**
 ```bash
-git submodule add https://github.com/xolotl-hub/web-agent-rules.git .agents
+git submodule add git@github.com:Agent-Rules-Ecosystem/web-agent-rules.git .agents
 ```
 
-Copiar el adaptador correspondiente desde `.agents/adapters/` según la herramienta de IA utilizada.
+**2. Inicia el agente**
+```text
+$boot
+```
 
-Iniciar con: `$boot`
+**3. Registra tu primera tarea**
+```text
+$work crear componente de botón reutilizable en React
+```
+
+---
+

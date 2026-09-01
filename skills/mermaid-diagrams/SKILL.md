@@ -19,8 +19,8 @@ graph TD
     classDef pending fill:#c62828,stroke:#fff,color:#fff;
 
     root[lib/features]:::done --> feature1[feature_a/]:::done
-    feature1 --> screen1[screen.dart]:::done
-    feature1 --> widget1[widgets.dart]:::pending
+    feature1 --> screen1[App.tsx]:::done
+    feature1 --> widget1[Header.tsx]:::pending
 ```
 
 ## 3. Actualización Incremental

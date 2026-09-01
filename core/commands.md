@@ -72,7 +72,7 @@ El agente debe:
 
 Ejemplo de uso:
 ```
-$work bug: el drawer no cierra al navegar con GoRouter en iOS
+$work bug: el modal no cierra al hacer click fuera en Chrome
 ```
 
 ---
@@ -86,8 +86,8 @@ El agente debe:
 1. Escanear exhaustivamente la estructura completa del proyecto, módulos y rutas.
 2. Mantener `overview/architecture.md` como **Índice Raíz Hub & Spoke** (< 200L): diagrama Mermaid de alto nivel de capas, tabla de capas del sistema e hipervínculos a los subdocumentos en `overview/architecture/`. Si proviene de migración del archivo plano legado, extraer solo el contenido de alto nivel y mover los detalles técnicos a los subdocumentos.
 3. Crear o actualizar los subdocumentos en `overview/architecture/` extrayendo o refinando el contenido del archivo plano legado (si existía):
-   - `overview/architecture/routes_map.md` (Mapa global de enrutamiento: React Router/SvelteKit).
-   - `overview/architecture/core/data_flow.md` (Estado global, Zustand/Svelte Stores, SSR).
+   - `overview/architecture/routes_map.md` (Mapa global de enrutamiento: React Router/SvelteKit/Next.js).
+   - `overview/architecture/core/data_flow.md` (Estado global, Zustand/Redux/Svelte Stores, API Client).
    - `overview/architecture/core/import_rules.md` (Reglas de importación por nivel de capa).
    - `overview/architecture/modules/<modulo>.md` (Subdocumento por cada módulo que supere 2 diagramas Mermaid o 5 componentes/pantallas).
 4. **Auditoría de Regla Atómica de Escala**: Por cada `overview/architecture/modules/<modulo>.md` existente, verificar si cubre más de un dominio de decisión (señal: el agente necesita leerlo completo para responder algo específico). Si se detecta, convertirlo en carpeta `overview/architecture/modules/<modulo>/` aplicando la Plantilla Canónica 3 de `ARCHITECTURE_STANDARD.md`: crear `<modulo>.md` como índice (< 150L) y subdocumentos atómicos por cada dominio identificado. **No anticipar subdivisiones futuras**: solo actuar cuando la señal es evidente en el módulo actual.
@@ -109,7 +109,7 @@ El agente debe:
 
 Ejemplo de uso:
 ```
-$learn Siempre inicializar GoRouter fuera del widget tree para evitar rebuilds
+$learn Usar React.memo / Svelte stores para evitar re-renders innecesarios en listas largas
 ```
 
 
@@ -139,7 +139,7 @@ $learnagnostico En MóduloX el flujo Entrada→Inventario→Salida debe document
 Protocolo de cierre de sesión. Es **regla obligatoria** la **sincronización automática y simultánea** de todos los archivos de control en `overview/` (`pendientes.md`, `deuda_tecnica.md`, `tasks.md`, `session.md`, `work_review.md`, `work.md` y `architecture.md`) sin requerir recordatorio manual por parte del usuario.
 
 El agente debe:
-1. Ejecutar `flutter analyze` si aplica. Suite de tests: ausente (sin carpeta `test/`) → `no aplica`; presente y no corrida/fallida → `no verificado` + motivo. Si la tarea implica build o release → consultar `.agents/knowledge/release_checklist.md`.
+1. Ejecutar linters Web (`npm run lint`, `npx tsc`) si aplica. Suite de tests: ausente (sin carpeta `test/` / `tests/` / `__tests__/`) → `no aplica`; presente y no corrida/fallida → `no verificado` + motivo. Si la tarea implica build o release → consultar `.agents/knowledge/release_checklist.md`.
 2. Registrar ítems o tareas secundarias identificadas durante la ejecución en `overview/work/pendientes.md`.
 3. Actualizar índice maestro `overview/work.md` con cambios de la sesión, retirar cualquier ítem/deuda resuelta inmediatamente de las tablas activas y trasladarlo a `## ✅ Completados (Historial)` en `work.md`, `deuda_tecnica.md` y `pendientes.md` conservando su ID.
 4. Sincronizar simultáneamente todos los archivos de control en `overview/` (`session.md`, `work.md`, `tasks.md`, `pendientes.md`, `deuda_tecnica.md`, `work_review.md` y `architecture.md`).
